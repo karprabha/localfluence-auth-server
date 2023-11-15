@@ -1,36 +1,37 @@
 {
-    "name": "localfluence-auth-server",
-    "module": "bin/www.ts",
-    "type": "module",
-    "author": "Prabhakar Yadav",
-    "scripts": {
-        "start": "bun ./bin/www",
-        "dev": "DEBUG=localfluence-auth-server:* && bun --hot ./bin/www",
-        "architecture": "depcruise --include-only \"^src\" --output-type dot src | dot -T svg > dependencygraph.svg"
-    },
-    "devDependencies": {
-        "@types/debug": "^4.1.12",
-        "@types/express": "^4.17.21",
-        "@types/http-errors": "^2.0.4",
-        "@types/morgan": "^1.9.9",
-        "@typescript-eslint/eslint-plugin": "^6.10.0",
-        "@typescript-eslint/parser": "^6.10.0",
-        "bun-types": "latest",
-        "dependency-cruiser": "^15.3.0",
-        "eslint": "^8.53.0",
-        "eslint-config-prettier": "^9.0.0",
-        "prettier": "^3.1.0"
-    },
-    "peerDependencies": {
-        "typescript": "^5.0.0"
-    },
-    "dependencies": {
-        "debug": "^4.3.4",
-        "express": "^4.18.2",
-        "express-async-handler": "^1.2.0",
-        "express-validator": "^7.0.1",
-        "http-errors": "^2.0.0",
-        "mongoose": "^8.0.0",
-        "morgan": "^1.10.0"
-    }
+  "name": "localfluence-auth-server",
+  "module": "bin/www.ts",
+  "type": "module",
+  "author": "Prabhakar Yadav",
+  "scripts": {
+    "start": "bun ./bin/www",
+    "dev": "DEBUG=localfluence-auth-server:* && bun --hot ./bin/www",
+    "architecture": "depcruise --include-only \"^src\" --output-type dot src | dot -T svg > dependencygraph.svg"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/express": "^4.17.21",
+    "@types/http-errors": "^2.0.4",
+    "@types/morgan": "^1.9.9",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "bun-types": "latest",
+    "dependency-cruiser": "^15.3.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-validator": "^7.0.1",
+    "http-errors": "^2.0.0",
+    "mongoose": "^8.0.0",
+    "morgan": "^1.10.0",
+    "query-string": "^8.1.0"
+  }
 }
