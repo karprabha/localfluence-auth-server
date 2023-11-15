@@ -1,4 +1,4 @@
-import { githubOAuthConfig } from "../../../../config/oauth.config";
+import { githubOAuthOptions } from "../../../../config/oauth.config";
 
 interface AuthResponse {
     access_token: string;
@@ -59,7 +59,7 @@ const getAccessToken = async (code: string): Promise<string> => {
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                ...githubOAuthConfig,
+                ...githubOAuthOptions,
                 code,
             }),
         },
