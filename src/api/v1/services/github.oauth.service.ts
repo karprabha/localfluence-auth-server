@@ -51,7 +51,7 @@ interface UserProfile {
 
 const getAccessToken = async (code: string): Promise<string> => {
     const response = await fetch(
-        `https://github.com/login/oauth/access_token?`,
+        "https://github.com/login/oauth/access_token?",
         {
             method: "POST",
             headers: {
