@@ -46,7 +46,6 @@ interface UserProfile {
     family_name: string;
     username: string;
     avatar_url: string;
-    email: string;
 }
 
 const getAccessToken = async (code: string): Promise<string> => {
@@ -82,7 +81,7 @@ const getUser = async (access_token: string): Promise<UserProfile> => {
     });
 
     if (response.ok) {
-        const { login, avatar_url, email, name } =
+        const { login, avatar_url, name } =
             (await response.json()) as GithubUser;
 
         const user = {
@@ -90,7 +89,6 @@ const getUser = async (access_token: string): Promise<UserProfile> => {
             family_name: name.split(" ").slice(1).join(" ") || "",
             username: login,
             avatar_url,
-            email,
         };
 
         return user;
