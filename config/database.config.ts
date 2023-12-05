@@ -7,7 +7,7 @@ interface DatabaseConfig {
 
 const databaseConfig: DatabaseConfig = {
     development: {
-        url: "mongodb://localhost:27017//localfluence-auth",
+        url: "mongodb://localhost:27017/localfluence-auth",
         options: {},
     },
     production: {
