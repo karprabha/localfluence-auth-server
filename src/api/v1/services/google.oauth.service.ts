@@ -43,7 +43,10 @@ const getAccessToken = async (code: string): Promise<string> => {
         const { access_token } = (await response.json()) as AuthResponse;
         return access_token;
     } else {
-        throw Error(response.statusText);
+        const err: any = await response.json();
+        throw new Error(
+            `Request failed with status ${response.status}: ${err.error_description}`,
+        );
     }
 };
 
