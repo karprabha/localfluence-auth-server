@@ -1,4 +1,4 @@
-import { githubOAuthOptions } from "../../../../config/oauth.config";
+import { githubOAuthOptions } from "../../../../config";
 
 interface AuthResponse {
     access_token: string;

@@ -1,4 +1,4 @@
-import { googleOAuthOptions } from "../../../../config/oauth.config";
+import { googleOAuthOptions } from "../../../../config";
 
 export interface AuthResponse {
     access_token: string;
