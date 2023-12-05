@@ -1,6 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 
 import {
+    jwtService,
     authService,
     githubOAuthService,
     googleOAuthService,
@@ -14,7 +15,10 @@ const githubOAuth = expressAsyncHandler(async (req, res, next) => {
 
     const authUser = await authService.handleOAuthLogin(user, "github");
 
-    res.json({ user, authUser });
+    const { accessToken, refreshToken } = jwtService.generateTokens(authUser);
+    await jwtService.manageRefreshToken(authUser, refreshToken);
+
+    res.json({ accessToken, refreshToken });
 });
 
 const googleOAuth = expressAsyncHandler(async (req, res, next) => {
@@ -25,7 +29,10 @@ const googleOAuth = expressAsyncHandler(async (req, res, next) => {
 
     const authUser = await authService.handleOAuthLogin(user, "google");
 
-    res.json({ user, authUser });
+    const { accessToken, refreshToken } = jwtService.generateTokens(authUser);
+    await jwtService.manageRefreshToken(authUser, refreshToken);
+
+    res.json({ accessToken, refreshToken });
 });
 
 export default {
