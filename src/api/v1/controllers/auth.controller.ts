@@ -6,6 +6,7 @@ import {
     githubOAuthService,
     googleOAuthService,
 } from "../services";
+import cookieOptions from "../../../../config/cookie.config";
 
 const githubOAuth = expressAsyncHandler(async (req, res, next) => {
     const code = req.query.code as string;
@@ -18,7 +19,9 @@ const githubOAuth = expressAsyncHandler(async (req, res, next) => {
     const { accessToken, refreshToken } = jwtService.generateTokens(authUser);
     await jwtService.manageRefreshToken(authUser, refreshToken);
 
-    res.json({ accessToken, refreshToken });
+    res.cookie("refreshToken", refreshToken, cookieOptions).json({
+        accessToken,
+    });
 });
 
 const googleOAuth = expressAsyncHandler(async (req, res, next) => {
@@ -32,7 +35,9 @@ const googleOAuth = expressAsyncHandler(async (req, res, next) => {
     const { accessToken, refreshToken } = jwtService.generateTokens(authUser);
     await jwtService.manageRefreshToken(authUser, refreshToken);
 
-    res.json({ accessToken, refreshToken });
+    res.cookie("refreshToken", refreshToken, cookieOptions).json({
+        accessToken,
+    });
 });
 
 export default {
