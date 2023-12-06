@@ -17,4 +17,11 @@ router.get("/auth/github", authController.githubOAuth);
 
 router.get("/auth/google", authController.googleOAuth);
 
+router.post(
+    "/auth/login",
+    authValidator.loginValidator,
+    queryValidationMiddleware,
+    authController.login,
+);
+
 export default router;
