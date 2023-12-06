@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { User, OAuthLogin, PasswordLogin } from "../models";
+import { User, OAuthLogin, PasswordLogin, RefreshToken } from "../models";
 
 interface UserProfile {
     first_name: string;
@@ -131,8 +131,28 @@ const handlePasswordLogin = async ({
     }
 };
 
+const handleUserLogout = async (refreshToken: string): Promise<string> => {
+    try {
+        const deletedToken = await RefreshToken.findOneAndDelete({
+            token: refreshToken,
+        });
+
+        if (!deletedToken) {
+            throw new Error("Token not found.");
+        }
+
+        console.log(`User with ID ${deletedToken.user} logged out.`);
+
+        return "Logout successful.";
+    } catch (error) {
+        console.error("Logout error:", error);
+        throw new Error("Internal server error.");
+    }
+};
+
 export default {
     handleOAuthLogin,
     handleUserSignUp,
     handlePasswordLogin,
+    handleUserLogout,
 };
