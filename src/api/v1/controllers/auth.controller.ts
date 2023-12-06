@@ -53,8 +53,30 @@ const signUp = expressAsyncHandler(async (req, res, next) => {
     res.status(201).json(signedUpUser);
 });
 
+const login = expressAsyncHandler(async (req, res, next) => {
+    const { username, password } = req.body;
+
+    const authUser = await authService.handlePasswordLogin({
+        username,
+        password,
+    });
+
+    if (!authUser) {
+        res.status(401).json({ message: "Invalid credentials" });
+    } else {
+        const { accessToken, refreshToken } =
+            jwtService.generateTokens(authUser);
+        await jwtService.manageRefreshToken(authUser, refreshToken);
+
+        res.cookie("refreshToken", refreshToken, cookieConfig).json({
+            accessToken,
+        });
+    }
+});
+
 export default {
     signUp,
     githubOAuth,
     googleOAuth,
+    login,
 };
