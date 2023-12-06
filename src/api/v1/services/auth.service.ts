@@ -1,4 +1,6 @@
-import { User, OAuthLogin } from "../models";
+import bcrypt from "bcryptjs";
+
+import { User, OAuthLogin, PasswordLogin } from "../models";
 
 interface UserProfile {
     first_name: string;
@@ -9,6 +11,19 @@ interface UserProfile {
 
 interface AuthUser {
     user_id: string;
+}
+
+interface SignUpData {
+    first_name: string;
+    family_name: string;
+    username: string;
+    password: string;
+}
+
+interface SignedUpUser {
+    first_name: string;
+    family_name: string;
+    username: string;
 }
 
 const handleOAuthLogin = async (
@@ -23,6 +38,14 @@ const handleOAuthLogin = async (
 
         if (oauthLogin) {
             return { user_id: oauthLogin.user.toString() };
+        }
+
+        const existingUser = await User.findOne({
+            username: user.username,
+        });
+
+        if (existingUser) {
+            throw new Error("Username is already in use");
         }
 
         const newUser = new User({
@@ -48,6 +71,38 @@ const handleOAuthLogin = async (
     }
 };
 
+const handleUserSignUp = async ({
+    first_name,
+    family_name,
+    username,
+    password,
+}: SignUpData): Promise<SignedUpUser> => {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+        first_name,
+        family_name,
+        username,
+    });
+
+    const savedUser = await newUser.save();
+
+    const newPasswordLogin = new PasswordLogin({
+        username: username,
+        password: hashedPassword,
+        user: savedUser._id,
+    });
+
+    await newPasswordLogin.save();
+
+    return {
+        first_name: newUser.first_name,
+        family_name: newUser.family_name,
+        username: newUser.username,
+    };
+};
+
 export default {
     handleOAuthLogin,
+    handleUserSignUp,
 };
