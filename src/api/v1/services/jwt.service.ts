@@ -5,6 +5,11 @@ interface AuthUser {
     user_id: string;
 }
 
+interface RefreshTokenRecord {
+    user: string;
+    token: string;
+}
+
 const generateTokens = (
     authUser: AuthUser,
 ): { accessToken: string; refreshToken: string } => {
@@ -34,7 +39,27 @@ const manageRefreshToken = async (
     }
 };
 
+const verifyRefreshToken = (
+    refreshToken: string,
+    refresh: RefreshTokenRecord,
+): AuthUser => {
+    const decoded = jwt.verifyRefreshToken(refreshToken);
+
+    if (!decoded || decoded.user_id !== refresh.user) {
+        throw new Error("Invalid refresh token.");
+    }
+
+    return { user_id: decoded.user_id };
+};
+
+const generateAccessToken = (authUser: AuthUser): string => {
+    const accessToken = jwt.generateAccessToken(authUser);
+    return accessToken;
+};
+
 export default {
     generateTokens,
     manageRefreshToken,
+    verifyRefreshToken,
+    generateAccessToken,
 };
