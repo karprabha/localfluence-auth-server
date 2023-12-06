@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const UserSchema = new Schema({
     first_name: { type: String, required: true, maxLength: 100 },
     family_name: { type: String, required: true, maxLength: 100 },
-    username: { type: String, maxLength: 50, unique: true },
+    username: { type: String, required: true, maxLength: 50, unique: true },
     role: {
         type: String,
         enum: ["user", "admin"],
