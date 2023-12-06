@@ -26,6 +26,11 @@ interface SignedUpUser {
     username: string;
 }
 
+interface LoginData {
+    username: string;
+    password: string;
+}
+
 const handleOAuthLogin = async (
     user: UserProfile,
     provider: string,
@@ -102,7 +107,32 @@ const handleUserSignUp = async ({
     };
 };
 
+const handlePasswordLogin = async ({
+    username,
+    password,
+}: LoginData): Promise<AuthUser | null> => {
+    try {
+        const user = await PasswordLogin.findOne({ username });
+
+        if (!user) {
+            return null;
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            return null;
+        }
+
+        return { user_id: user._id.toString() };
+    } catch (error) {
+        console.error("Authentication error:", error);
+        return null;
+    }
+};
+
 export default {
     handleOAuthLogin,
     handleUserSignUp,
+    handlePasswordLogin,
 };
