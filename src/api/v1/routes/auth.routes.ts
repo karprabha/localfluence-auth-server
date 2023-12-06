@@ -31,4 +31,11 @@ router.post(
     authController.logout,
 );
 
+router.post(
+    "/auth/refresh",
+    authValidator.refreshAccessTokenValidator,
+    queryValidationMiddleware,
+    authController.refreshAccessToken,
+);
+
 export default router;
