@@ -74,9 +74,18 @@ const login = expressAsyncHandler(async (req, res, next) => {
     }
 });
 
+const logout = expressAsyncHandler(async (req, res, next) => {
+    const { refreshToken } = req.cookies;
+
+    const message = await authService.handleUserLogout(refreshToken);
+
+    res.clearCookie("refreshToken", cookieConfig).status(200).json({ message });
+});
+
 export default {
     signUp,
     githubOAuth,
     googleOAuth,
     login,
+    logout,
 };
