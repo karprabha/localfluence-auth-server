@@ -82,10 +82,27 @@ const logout = expressAsyncHandler(async (req, res, next) => {
     res.clearCookie("refreshToken", cookieConfig).status(200).json({ message });
 });
 
+const refreshAccessToken = expressAsyncHandler(async (req, res, next) => {
+    const { refreshToken } = req.cookies;
+
+    const refreshTokenRecord =
+        await authService.getRefreshTokenRecord(refreshToken);
+
+    const decodedPayload = jwtService.verifyRefreshToken(
+        refreshToken,
+        refreshTokenRecord,
+    );
+
+    const accessToken = jwtService.generateAccessToken(decodedPayload);
+
+    res.json({ accessToken });
+});
+
 export default {
     signUp,
     githubOAuth,
     googleOAuth,
     login,
     logout,
+    refreshAccessToken,
 };
