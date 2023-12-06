@@ -31,6 +31,11 @@ interface LoginData {
     password: string;
 }
 
+interface RefreshTokenRecord {
+    user: string;
+    token: string;
+}
+
 const handleOAuthLogin = async (
     user: UserProfile,
     provider: string,
@@ -150,9 +155,26 @@ const handleUserLogout = async (refreshToken: string): Promise<string> => {
     }
 };
 
+const getRefreshTokenRecord = async (
+    refreshToken: string,
+): Promise<RefreshTokenRecord> => {
+    if (!refreshToken) {
+        throw new Error("Refresh token is required.");
+    }
+
+    const refresh = await RefreshToken.findOne({ token: refreshToken });
+
+    if (!refresh) {
+        throw new Error("Refresh token not found.");
+    }
+
+    return { user: refresh.user.toString(), token: refresh.token };
+};
+
 export default {
     handleOAuthLogin,
     handleUserSignUp,
     handlePasswordLogin,
     handleUserLogout,
+    getRefreshTokenRecord,
 };
